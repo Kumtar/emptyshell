@@ -1,0 +1,35 @@
+ $scope.layoutDone = function () {
+            common.autoSizeGrid();
+            $timeout(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('table[st-table] tbody > tr').click(function () {
+                    var row = $(this);                 //cache the row
+                    if (!row.hasClass('selected')) {
+                        row.addClass('selected')       //add class to clicked row
+                            .siblings()                //get the other rows
+                            .removeClass('selected');  //remove their classes
+                    }
+                });
+            }, 0); // wait...
+        };
+
+function autoSizeGrid() {
+            var formPosition = $('#wrapper').offset();
+            //alert("x, y = " + formPosition.left + ", " + formPosition.top);
+            var formHeight = $(window).height() - formPosition.top - 75;
+            //alert(formHeight);
+            $('#wrapper').height(formHeight);
+            $('.widget-content').height(formHeight);
+            $('.widget-content').height(formHeight);
+
+            var gridPosition = $('.grid-row').offset();
+            var gridHeight = formHeight - (gridPosition.top - formPosition.top) - 5;
+
+            // set minimum height of grid
+            if (gridHeight < 150) {
+                gridHeight = 150;
+            }
+            //alert(gridHeight);
+            $('.grid-row').height(gridHeight);
+            $('.grid-row table').height(gridHeight);
+        };
