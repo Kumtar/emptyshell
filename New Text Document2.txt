@@ -1,0 +1,200 @@
+<section id="billingEventsSection" class="mainbar" data-ng-controller="billingEvents as vm">
+    <section class="matter">
+        <div class="widget">
+            <div class="page-nav">
+                <div class="page-nav-group">
+                    <span back class=""></span>
+                    <span forward class=""></span>
+                </div>
+            </div>
+            <h4 class="widget-head" data-cc-widget-header title="{{vm.model.title}}"></h4>
+            <div class="widget-content user trns-prms">
+                <div class="btn-group-controls">
+                    <button class="btn btn-info " data-ng-click="vm.extract()"><i class="fa fa-file-excel-o"></i><span>Extract to Excel</span></button>
+                </div>
+                <form name="userform" id="wrapper" novalidate pims-form ng-enter="vm.search()">
+                    <div class="container">
+                        <!--1st Row-->
+                        <label class="col-md-1">Premises Status</label>
+                        <div class="col-md-3">
+                            <select data-ng-options="i.description for i in vm.model.lookups.propertyStatusList"
+                                    data-ng-model="vm.model.propertyStatusSelected"
+                                    ng-change="vm.filterPremisesAccordingToStatus()" />
+                        </div>
+                        <label class="col-md-1">My Properties</label>
+                        <div class="col-md-3">
+                            <input type="checkbox"
+                                   ng-model="vm.model.myProperty"
+                                   ng-change="vm.setMyResponsibilities(true)">
+                        </div>
+                        <label class="col-md-1">From</label>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text"
+                                       name="from"
+                                       data-autoclose="1"
+                                       bs-datepicker
+                                       data-date-format="dd/MM/yyyy"
+                                       ng-model="vm.model.fromDate"
+                                       validate-from="{{vm.model.toDate | date:'dd/MM/yyyy'}}"
+                                       pims-validate-tooltip />
+                                <span class="input-group-addon">
+                                    <span ng-click="vm.openCalendar($event)" class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--2nd Row-->
+                    <div class="container">
+                        <label class="col-md-1">Premises</label>
+                        <div class="col-md-3">
+                            <div multi-select
+                                 input-model="vm.model.propertiesInputModel"
+                                 output-model="vm.model.propertiesSelected"
+                                 button-label="icon id"
+                                 item-label="icon description"
+                                 tick-property="ticked"
+                                 orientation="vertical"
+                                 selection-mode="multiple"
+                                 max-labels="3"
+                                 max-height="280px"
+                                 directive-id="multiSelectFull"
+                                 helper-elements="filter"
+                                 default-label="Select"
+                                 is-typeahead="true"
+                                 typeahead-url="/pims/Search/Properties">
+                            </div>
+                        </div>
+                        <label class="col-md-1">Event Status</label>
+                        <div class="col-md-3">
+                            <select data-ng-options="i.description for i in vm.model.lookups.eventStatusList track by i.id"
+                                    data-ng-model="vm.model.eventStatusSelected"></select>
+                        </div>
+                        <label class="col-md-1">To</label>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text"
+                                       name="toDate"
+                                       data-autoclose="1"
+                                       bs-datepicker
+                                       data-date-format="dd/MM/yyyy"
+                                       ng-model="vm.model.toDate"
+                                       validate-to="{{vm.model.fromDate | date:'dd/MM/yyyy'}}"
+                                       pims-validate-tooltip />
+                                <span class="input-group-addon">
+                                    <span ng-click="vm.openCalendar($event)" class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--3rd Row-->
+                    <div class="container">
+                        <label class="col-md-1">Responsibility</label>
+                        <div class="col-md-3" ng-disabled="vm.model.myProperty">
+                            <div multi-select
+                                 output-model="vm.model.responsibilitiesSelected"
+                                 input-model="vm.model.responsibilitiesInputModel"
+                                 button-label="description"
+                                 item-label="icon description"
+                                 tick-property="ticked"
+                                 orientation="vertical"
+                                 selection-mode="multiple"
+                                 max-labels="1"
+                                 max-height="280px"
+                                 directive-id="multiSelectFull"
+                                 helper-elements="filter"
+                                 default-label="Please select..."
+                                 is-typeahead="true"
+                                 typeahead-url="/pims/Search/Employees">
+                            </div>
+                        </div>
+
+                        <label class="col-md-1">Event Type</label>
+                        <div class="col-md-3">
+                            <select data-ng-options="i as i.description for i in vm.model.lookups.eventTypeList track by i.description"
+                                    data-ng-model="vm.model.eventTypeSelected"></select>
+                        </div>
+                        <label class="col-md-1">Quick Ref</label>
+                        <div class="col-md-3">
+                            <input type="text" name="quickReference" ng-model="vm.model.quickReference" placeholder="e.g. 0042D12/1:CLY2" />
+                        </div>
+                    </div>
+                    <!--4th Row-->
+                    <div class="container">
+                        <label class="col-md-1">Turnover Leases</label>
+                        <div class="col-md-3">
+                            <select data-ng-options="i as i.description for i in vm.model.lookups.partPeriodsCredits track by i.description"
+                                    data-ng-model="vm.model.turnoverLeasesSelected"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Buttons-->
+                        <div class="btn-group pull-right">
+                            <button  class="btn btn-info btn-search" data-ng-click="vm.search()"><i class="fa fa-search"></i><span>Search</span></button>
+                            <button class="btn btn-default btn-clear" data-ng-click="vm.clear()"><i class="fa fa-minus"></i><span>Clear</span></button>
+                        </div>
+                    </div>
+
+
+                    <div class="row grid-row">
+                        <table st-table="vm.model.searchResult" class="table table-striped" st-pipe="vm.updateGrid" ng-show="vm.model.hasSearchInit">
+                            <thead>
+                                <tr>
+                                    <th class="col-action">Action</th>
+                                    <th class="col-2" st-sort="BillingControlAccountCode"><a ng-click="">Reference</a></th>
+                                    <th class="col-3" st-sort="DemiseName"><a ng-click="">Demise</a></th>
+                                    <th class="col-4" st-sort="TenantName"><a ng-click="">Tenant</a></th>
+                                    <th class="col-5" st-sort="pimsEventDescription"><a ng-click="">Event Date</a></th>
+                                    <th class="col-6" st-sort="BillingControlEventDate"><a ng-click="">Event</a></th>
+                                    <th class="col-7" st-sort="BillingControlEventStatusDescription"><a ng-click="">Status</a></th>
+                                    <th class="col-8" st-sort="Turnover"><a ng-click="">Turnover</a></th>
+                                    <th class="col-9"><a ng-click="">Comment</a></th>
+                                    <th class="col-10" st-sort="BillingControlEventReminderDate"><a ng-click="">Reminder Date</a></th>
+                                </tr>
+                            </thead>
+                            <tbody st-scroll>
+                                <tr ng-repeat="result in vm.model.searchResult"
+                                    repeat-done="layoutDone()">
+                                    <td class="col-action" landsec-dropdown>
+                                        <!-- todo:  ng-include="'template.html'" -->
+                                        <div class="btn-group" dropdown>
+                                            <button type="button" class="btn btn-info  ">Action</button>
+                                            <button type="button" class="btn btn-info dropdown-toggle action-split">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Split button!</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li ng-repeat="act in vm.model.allActions" route-click
+                                                    model="{{vm.model.templateId}}"
+                                                    class="btn btn-group-lg"
+                                                    label="{{act.description}}"
+                                                    r-click="vm.handleAction(result,act)" is-nav="{{act.isNav}}">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="col-2">{{result.billingControlAccountCode}}</td>
+                                    <td class="col-3">{{result.demiseName}}</td>
+                                    <td class="col-4">{{result.tenantName}}</td>
+                                    <td class="col-5">{{result.billingControlEventDate | date:'dd/MM/yyyy'}}</td>
+                                    <td class="col-6">{{result.pimsEventDescription}}</td>
+                                    <td class="col-7">{{result.billingControlEventStatusDescription}}</td>
+                                    <td class="col-8">{{result.turnoverDescription}}</td>
+                                    <td class="col-9">{{result.billingControlEventComment}}</td>
+                                    <td class="col-10">{{result.billingControlEventReminderDate | date:'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <span class="record-count left" ng-show="vm.model.hasSearchInit">
+                            {{vm.model.searchResult.length}} record{{vm.model.searchResult.length != 1 ? "s" : ""}} returned
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</section>
