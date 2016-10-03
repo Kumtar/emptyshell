@@ -1,0 +1,254 @@
+table[st-table] {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        height: 100%;
+
+        * {
+            box-sizing: inherit;
+            -moz-box-sizing: inherit;
+        }
+        // striping
+        &.table-striped > tbody {
+            & > tr:nth-child(odd) > td {
+                background-color: #fff;
+            }
+
+            & > tr:nth-child(even) > td {
+                @include color-from-rgba-unimportant('background-color', $ls-grey-extra-light);
+            }
+        }
+        // end of striping
+        .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col-13, .col-14 {
+            width: 10%;
+        }
+
+        & > thead > tr > th, & > tbody > tr > td {
+            border: none;
+            border-bottom: 1px solid $ls-grey-light;
+            border-collapse: collapse;
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+
+            .money-column {
+                text-align: right;
+                padding-right: 6px;
+            }
+
+            .date-column {
+                text-align: center;
+                width: 72px;
+                padding: 0 3px;
+            }
+        }
+
+        & > thead {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+
+            & > tr {
+                height: 30px;
+                /* fallback */
+                width: 97%;
+                /* minus scroll bar width */
+                width: -webkit-calc(100% - 16px);
+                width: -moz-calc(100% - 16px);
+                width: calc(100% - 16px);
+
+                & > th {
+                    text-align: left;
+                    line-height: 2;
+                    color: #fff;
+                    border-bottom: none;
+                    @include color-from-rgba('background-color', $ls-grey);
+
+                    a {
+                        color: #fff;
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+
+                    &:first-child a {
+                        padding-left: 10px;
+                    }
+                }
+            }
+        }
+
+        & > tbody {
+            overflow-y: scroll;
+            display: inline-block;
+            border: 1px solid $ls-grey-extra-light;
+            border-top: none;
+            border-bottom: none;
+
+            & > tr.selected {
+                height: auto;
+                min-height: 30px;
+                max-height: 260px;
+
+                & > td {
+                    @include color-from-rgba('background-color', $ls-mid-blue-extra-light);
+                    height: auto;
+                    min-height: 30px;
+                    max-height: 260px;
+                    white-space: normal;
+                    text-overflow: clip;
+                }
+            }
+        }
+
+        & > thead > tr, & > tbody > tr, & > tfoot > tr {
+            display: flex;
+            position: relative;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+
+        & > thead, & > tfoot {
+            flex-shrink: 0;
+        }
+
+        & > thead > tr > th, & > tbody > tr > td {
+            padding: 0 1px 0 0;
+            height: 30px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+            position: static;
+
+            select, input {
+                height: 25px !important;
+            }
+
+            input[bs-datepicker] {
+                width: 100% !important;
+            }
+
+            .btn-delete, .btn-insert {
+                @include color-from-rgba('background-color', $ls-grey-light);
+                font-size: 14px !important;
+                font-weight: 400;
+                padding: 3px 3px;
+                width: 26px;
+                cursor: pointer;
+                border-radius: 4px !important;
+                line-height: 14px;
+
+                i {
+                    text-align: center;
+                    margin: 0 !important;
+                    cursor: pointer;
+                }
+
+                &:hover, &:hover i {
+                    color: #fff;
+                    font-weight: 500;
+                    @include color-from-rgba('background-color', $ls-mid-grey);
+                }
+            }
+        }
+
+        & > tfoot {
+            display: inline-block;
+        }
+
+        & > tfoot > tr > td {
+            width: 100%;
+            display: inline-block;
+        }
+        // action dropdowns
+        tr.selected .action-button-container {
+            overflow: visible;
+            position: relative;
+        }
+
+        .btn-action-group {
+            z-index: 0;
+            padding: 0;
+        }
+        // action dropdown within grids
+        div.btn-group {
+            margin: 0 !important;
+            width: 90px;
+            position: static !important;
+
+            &.open {
+                position: fixed !important;
+                z-index: 100;
+                background: rgba(0, 153, 199, 1) ;
+
+                .dropdown-menu {
+                    .btn {
+                        display: block !important;
+                        z-index: 200;
+                    }
+                }
+            }
+
+            button.btn-info {
+                width: 58px !important;
+                font-size: 12px !important;
+                width: 53px !important;
+
+                &.dropdown-toggle {
+                    width: 26px !important;
+                }
+            }
+
+            button, button.btn-info, .btn-info {
+                font-size: 12px !important;
+                height: 30px !important;
+            }
+
+            ul.dropdown-menu {
+                color: #fff;
+                min-width: 100px;
+                top: 30px;
+                margin: 0;
+                padding: 0 !important;
+                border-top-left-radius: 0;
+                @include color-from-rgba('background', $ls-light-blue-light);
+                // action link item
+                li {
+                    color: #fff;
+                    margin: 0 !important;
+                    height: 30px !important;
+                    font-size: 12px !important;
+                    @include color-from-rgba('background', $ls-light-blue-light);
+
+                    &:hover {
+                        @include color-from-rgba('background', $ls-mid-blue);
+                    }
+
+                    padding: 0 !important;
+                    border: 0 !important;
+                    width: 100%;
+                    text-align: left;
+
+                    a {
+                        display: block;
+                        font-weight: normal !important;
+                        color: #fff;
+                        width: 100%;
+                        line-height: 18px;
+                        padding: 5px 13px !important;
+
+                        &:hover {
+                            display: block;
+                            @include color-from-rgba('background-color', $ls-mid-blue);
+                            color: #fff;
+                        }
+                    }
+                }
+                // end of action link item
+            }
+            // end of ul.dropdown-menu
+        }
+        // end of action btn-group
+    }
